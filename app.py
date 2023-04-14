@@ -27,7 +27,7 @@ def add_new_emp():
 def update_emp():
     return render_template('updateEmp.html')
 
-@app.route('sinlge_emp_profile')
+@app.route('/single_emp_profile')
 def single_emp_profile():
     return render_template('singleEmpProfile.html')
 
