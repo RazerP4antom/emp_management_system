@@ -62,22 +62,22 @@
             <h3>UPDATE EMPLOYEES</h3>
           </caption>
           <hr />
-          <form class="p-3">
+          <form class="p-3" action="update_emp" method="POST">
             <div class="mb-2">
               <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" />
+              <input name="name" type="text" class="form-control" id="name" />
             </div>
             <div class="mb-2">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" />
+              <input name="email" type="email" class="form-control" id="email" />
             </div>
             <div class="mb-2">
-              <label for="name" class="form-label">Phone</label>
-              <input type="text" class="form-control" id="phone" />
+              <label for="phone" class="form-label">Phone</label>
+              <input name="phone" type="text" class="form-control" id="phone" />
             </div>
             <div class="mb-2">
-              <label for="email" class="form-label">Address</label>
-              <input type="email" class="form-control" id="phone" />
+              <label for="addrs" class="form-label">Address</label>
+              <input name="addrs" type="text" class="form-control" id="addrs" />
             </div>
             <button
               type="submit"

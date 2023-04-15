@@ -97,10 +97,25 @@ def update_emp():
     user = get_current_user()
     return render_template('updateEmp.html', user = user)
 
-@app.route('/single_emp_profile')
-def single_emp_profile():
+
+@app.route('/delete_emp/<int:empid>', methods=['POST','GET'])
+def delete_emp(empid):
     user = get_current_user()
-    return render_template('singleEmpProfile.html', user = user)
+    if request.method == 'GET':
+        db = get_database()
+        db.execute('delete from emp where empid = ?',[empid])
+        db.commit()
+        return redirect(url_for('dashboard'))
+    return render_template('dashboard.html', user = user)
+
+
+@app.route('/single_emp_profile/<int:empid>')
+def single_emp_profile(empid):
+    user = get_current_user()
+    db = get_database()
+    emp_cur = db.execute('select * from emp where empid = ?',[empid])
+    single_emp = emp_cur.fetchone()
+    return render_template('singleEmpProfile.html', user = user, single_emp = single_emp)
 
 @app.route('/logout')
 def logout():
