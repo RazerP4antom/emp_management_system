@@ -92,10 +92,30 @@ def add_new_emp():
         return redirect(url_for('dashboard'))
     return render_template('addNewEmp.html', user = user)
 
-@app.route('/update_emp')
+@app.route('/fetch_one_emp/<int:empid>')
+def fetch_one_emp(empid):
+    user = get_current_user()
+    db = get_database()
+    emp_cur = db.execute('select * from emp where empid = ?',[empid])
+    single_emp = emp_cur.fetchone()
+    return render_template('updateEmp.html', user = user, single_emp = single_emp)
+
+
+
+@app.route('/update_emp', methods=['POST','GET'])
 def update_emp():
     user = get_current_user()
-    return render_template('updateEmp.html', user = user)
+    db = get_database()
+    if request.method == 'POST':
+        empid = request.form['empid']
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        addrs = request.form['addrs']
+        db.execute('update emp set name = ?, email = ?, phone = ?, address = ? where empid = ?',[name,email,phone,addrs,empid])
+        db.commit()
+        return redirect(url_for('dashboard'))
+    return render_template('dashboard.html', user = user)
 
 
 @app.route('/delete_emp/<int:empid>', methods=['POST','GET'])
