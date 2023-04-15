@@ -68,7 +68,12 @@ def register():
 @app.route('/dashboard')
 def dashboard():
     user = get_current_user()
-    return render_template('dashboard.html',user = user)
+    if user == None:
+        return render_template('login.html', login_error = 'Login to access dashboard')
+    if user['admin'] == 1:
+        return render_template('dashboard.html',user = user)
+    else:
+        return render_template('home.html', error = "You don't have the admin rights")
 
 @app.route('/add_new_emp')
 def add_new_emp():
