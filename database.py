@@ -9,4 +9,4 @@ def connection():
 def get_database():
     if not hasattr(g, 'crudapp_db'):
         g.crudapp_db = connection()
-    return g.crudapp.db
+    return g.crudapp_db
