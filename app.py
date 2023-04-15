@@ -30,7 +30,6 @@ def index():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
-    user = get_current_user()
     error = None
     db = get_database()
     if request.method == 'POST':
@@ -46,6 +45,7 @@ def login():
                 error = "Username or Password did not match"     
         else:
             error = "Username not found"
+    user = get_current_user()
     return render_template('login.html', login_error = error, user = user)
 
 @app.route('/register', methods=['POST','GET'])
@@ -68,16 +68,28 @@ def register():
 @app.route('/dashboard')
 def dashboard():
     user = get_current_user()
+    db = get_database()
     if user == None:
         return render_template('login.html', login_error = 'Login to access dashboard')
     if user['admin'] == 1:
-        return render_template('dashboard.html',user = user)
+        emp_cru = db.execute('select * from emp')
+        all_emp = emp_cru.fetchall()
+        return render_template('dashboard.html',user = user, all_emp = all_emp)
     else:
         return render_template('home.html', error = "You don't have the admin rights")
 
-@app.route('/add_new_emp')
+@app.route('/add_new_emp', methods=['POST','GET'])
 def add_new_emp():
     user = get_current_user()
+    db = get_database()
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        addrs = request.form['addrs']
+        db.execute('insert into emp (name, email, phone, address) values (?,?,?,?)',[name,email,phone,addrs])
+        db.commit()
+        return redirect(url_for('dashboard'))
     return render_template('addNewEmp.html', user = user)
 
 @app.route('/update_emp')
